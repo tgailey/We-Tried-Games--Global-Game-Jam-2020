@@ -78,6 +78,10 @@ public class NailShooter : MonoBehaviour
 
                     if (results[i].collider.gameObject.GetComponent<FixedJoint>() == null || results[i].collider.gameObject.GetComponent<FixedJoint>().connectedBody != results[i - 1].collider.GetComponent<Rigidbody>())
                     {
+                        if (results[i].collider.gameObject.GetComponent<Rigidbody>() == null)
+                        {
+                            results[i].collider.gameObject.AddComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                        }
                         results[i].collider.gameObject.AddComponent<FixedJoint>().connectedBody = results[i - 1].collider.GetComponent<Rigidbody>();
                     }
 

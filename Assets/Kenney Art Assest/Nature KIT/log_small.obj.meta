@@ -3,7 +3,17 @@ guid: 15069b5c4689e154ea4241a18eb5e988
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: natureKit-wood
+    second: {fileID: 2100000, guid: 16b5d4ddff35c9e4e86deac366e6f246, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: natureKit-woodLight
+    second: {fileID: 2100000, guid: 83f685ab608edf240b0474fa756e1c0d, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
