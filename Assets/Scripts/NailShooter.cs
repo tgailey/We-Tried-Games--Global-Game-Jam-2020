@@ -76,13 +76,13 @@ public class NailShooter : MonoBehaviour
 
                     //results[i - 1].collider.gameObject.AddComponent<FixedJoint>().connectedBody = results[i].collider.GetComponent<Rigidbody>();
 
-                    if (results[i].collider.gameObject.GetComponent<FixedJoint>() == null || results[i].collider.gameObject.GetComponent<FixedJoint>().connectedBody != results[i - 1].collider.GetComponent<Rigidbody>())
+                    if (results[i - 1].collider.gameObject.GetComponent<FixedJoint>() == null || results[i - 1].collider.gameObject.GetComponent<FixedJoint>().connectedBody != results[i].collider.GetComponent<Rigidbody>())
                     {
-                        if (results[i].collider.gameObject.GetComponent<Rigidbody>() == null)
+                        if (results[i - 1].collider.gameObject.GetComponent<Rigidbody>() == null)
                         {
-                            results[i].collider.gameObject.AddComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                            results[i - 1].collider.gameObject.AddComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                         }
-                        results[i].collider.gameObject.AddComponent<FixedJoint>().connectedBody = results[i - 1].collider.GetComponent<Rigidbody>();
+                        results[i - 1].collider.gameObject.AddComponent<FixedJoint>().connectedBody = results[i].collider.GetComponent<Rigidbody>();
                     }
 
                     Debug.Log("close enough");
@@ -165,8 +165,8 @@ public class NailShooter : MonoBehaviour
                 Debug.Log("T");
                 //nail.childObject.GetComponent<Rigidbody>().isKinematic = false;
                 //nail.childObject.transform.parent = null;
-                if (nail.parentObject != null)
-                    GameObject.Destroy(nail.parentObject.GetComponent<FixedJoint>());
+                if (nail.childObject != null)
+                    GameObject.Destroy(nail.childObject.GetComponent<FixedJoint>());
                 else
                 {
                     Debug.Log("WHAT?");
