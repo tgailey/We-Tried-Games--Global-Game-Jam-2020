@@ -50,19 +50,19 @@ public class GrabItem : MonoBehaviour
 		grabbedItem = hit.collider.gameObject.transform;
 		Transform ogParent = grabbedItem.transform.parent;
 		Rigidbody grabbedrb = grabbedItem.GetComponent<Rigidbody>();
-		GameObject copy = Instantiate(grabbedItem.gameObject);
-		copy.name = "collider cheat object";
-		copy.transform.rotation = grabbedItem.rotation;
-		Destroy(copy.GetComponent<Rigidbody>());
-		copy.GetComponent<Renderer>().enabled = false;
-		Physics.IgnoreCollision(transform.GetComponent<Collider>(), grabbedItem.GetComponent<Collider>(), true);
-		Physics.IgnoreCollision(transform.GetComponent<Collider>(), copy.GetComponent<Collider>(), true);
-		float mag = copy.GetComponent<Collider>().bounds.size.magnitude;
-		float size = mag / (mag + 1f);
-		float ratio = Mathf.Abs(mag - size);
-		copy.transform.localScale /= size;
-		copy.transform.parent = grabbedItem;
-		copy.transform.localPosition = Vector3.zero;
+		//GameObject copy = Instantiate(grabbedItem.gameObject);
+		//copy.name = "collider cheat object";
+		//copy.transform.rotation = grabbedItem.rotation;
+		//Destroy(copy.GetComponent<Rigidbody>());
+		//copy.GetComponent<Renderer>().enabled = false;
+		//Physics.IgnoreCollision(transform.GetComponent<Collider>(), grabbedItem.GetComponent<Collider>(), true);
+		//Physics.IgnoreCollision(transform.GetComponent<Collider>(), copy.GetComponent<Collider>(), true);
+		//float mag = copy.GetComponent<Collider>().bounds.size.magnitude;
+		//float size = mag / (mag + 1f);
+		//float ratio = Mathf.Abs(mag - size);
+		//copy.transform.localScale /= size;
+		//copy.transform.parent = grabbedItem;
+		//copy.transform.localPosition = Vector3.zero;
 
 		grabbedrb.useGravity = false;
 		grabbedItem.transform.parent = grabPoint.transform;
@@ -74,14 +74,15 @@ public class GrabItem : MonoBehaviour
 		{
 			grabbedrb.velocity = Vector3.zero;
 			time += Time.fixedDeltaTime;
-			grabbedItem.position = Vector3.MoveTowards(grabbedItem.position, grabPoint.position, Time.fixedDeltaTime * 10);
+			grabbedrb.velocity = (grabPoint.position - grabbedItem.position) * Time.deltaTime * 1000;
+			//grabbedItem.position = Vector3.MoveTowards(grabbedItem.position, grabPoint.position, Time.fixedDeltaTime * 10);
 			grabbedItem.rotation = Quaternion.Lerp(ogRotation, Quaternion.identity, time * 2);
 			yield return new WaitForFixedUpdate();
 		}
 		grabbedItem.transform.parent = ogParent;
 		grabbedrb.useGravity = true;
 		currentHoldDistance = defaultHoldDistance;
-		Destroy(copy);
+		//Destroy(copy);
 		Physics.IgnoreCollision(transform.GetComponent<Collider>(), grabbedItem.GetComponent<Collider>(), false);
 		grabbedItem = null;
 		grabItemRoutine = null;
