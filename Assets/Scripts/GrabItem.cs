@@ -33,7 +33,44 @@ public class GrabItem : MonoBehaviour
 				if (Physics.Raycast(ray, out hit, grabDistanceLimit) && hit.collider.GetComponent<Rigidbody>() != null)
 				{
 					grab = true;
-					grabItemRoutine = StartCoroutine(holditem());
+
+                    HashSet<GameObject> lookedAtObjects = new HashSet<GameObject>();
+                    Queue<GameObject> toLookAtObjects = new Queue<GameObject>();
+
+                    toLookAtObjects.Enqueue(hit.collider.gameObject);
+                    lookedAtObjects.Add(hit.collider.gameObject);
+
+                    while (toLookAtObjects.Count > 0)
+                    {
+                        GameObject obj = toLookAtObjects.Dequeue();
+
+                        if (obj.GetComponent<Rigidbody>() == null || obj.GetComponent<Rigidbody>().constraints == RigidbodyConstraints.FreezeAll)
+                        {
+                            grab = false;
+                            break;
+                        }
+
+                        FixedJoint[] joints = obj.GetComponents<FixedJoint>();
+                        foreach(FixedJoint joint in joints)
+                        {
+                            if (lookedAtObjects.Contains(joint.connectedBody.gameObject) == false)
+                            {
+                                toLookAtObjects.Enqueue(joint.connectedBody.gameObject);
+                            }
+                        }
+
+                        RelationshipNoter[] relationships = obj.GetComponents<RelationshipNoter>();
+                        foreach (RelationshipNoter relationship in relationships)
+                        {
+                            if (lookedAtObjects.Contains(relationship.relationshipObject) == false)
+                            {
+                                toLookAtObjects.Enqueue(relationship.relationshipObject);
+                            }
+                        }
+                    }
+
+                    if (grab)
+					    grabItemRoutine = StartCoroutine(holditem());
 				}
 			}
 			else

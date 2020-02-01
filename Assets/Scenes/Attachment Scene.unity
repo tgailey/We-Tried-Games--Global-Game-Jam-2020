@@ -96,7 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
-  m_LightingDataAsset: {fileID: 112000000, guid: 03bf5ed1517e78d4a927016708eaa779,
+  m_LightingDataAsset: {fileID: 112000000, guid: 8403d31737c512f49a490154a2f620e1,
     type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -1170,7 +1170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cbb4b5cc43178544a6debe0bbe8a309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nail_prefab: {fileID: 3820194437612364051, guid: 9732484c50095fb44afae0c691ad623a,
+  nail_prefab: {fileID: 2090793667189956313, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
     type: 3}
   nail_distance: 1
   nail_speed: 50
@@ -1237,6 +1237,45 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1800746598}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1808988126 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100004, guid: c6453f8e1f814744d8b94e5a6d1f9942,
+    type: 3}
+  m_PrefabInstance: {fileID: 282742707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1808988132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808988126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f43d32d5a5584b4a8ff3b5fcde5b83a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pipelineAsset: {fileID: 11400000, guid: 4e11c81ca78dfef4994488d7e756c3e6, type: 2}
+--- !u!114 &1808988133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808988126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 1
+  m_RequiresOpaqueTextureOption: 1
+  m_RendererOverrideOption: 1
+  m_RendererData: {fileID: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!95 &2091389158 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3469164269595503483, guid: 25984824e0b5ec04ca75e5b5395ec8ac,
@@ -1431,3 +1470,72 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9732484c50095fb44afae0c691ad623a, type: 3}
+--- !u!1001 &7958127432801123398
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -15.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 346352419121978253, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090793667189956313, guid: 8880b04ef7e17bf4d9dc9fd482712d90,
+        type: 3}
+      propertyPath: m_Name
+      value: NailPrefab
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8880b04ef7e17bf4d9dc9fd482712d90, type: 3}

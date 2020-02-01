@@ -83,6 +83,7 @@ public class NailShooter : MonoBehaviour
                             results[i - 1].collider.gameObject.AddComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                         }
                         results[i - 1].collider.gameObject.AddComponent<FixedJoint>().connectedBody = results[i].collider.GetComponent<Rigidbody>();
+                        results[i].collider.gameObject.AddComponent<RelationshipNoter>().relationshipObject = results[i - 1].collider.gameObject;
                     }
 
                     Debug.Log("close enough");
@@ -166,7 +167,10 @@ public class NailShooter : MonoBehaviour
                 //nail.childObject.GetComponent<Rigidbody>().isKinematic = false;
                 //nail.childObject.transform.parent = null;
                 if (nail.childObject != null)
+                {
                     GameObject.Destroy(nail.childObject.GetComponent<FixedJoint>());
+                    GameObject.Destroy(nail.parentObject.GetComponent<RelationshipNoter>());
+                }
                 else
                 {
                     Debug.Log("WHAT?");
