@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
+using TMPro;
 
 public class GrabItem : MonoBehaviour
 {
@@ -14,23 +15,44 @@ public class GrabItem : MonoBehaviour
 	//private GameObject underWeight;
 	public bool grab = false;
 	private Camera head { get { return Camera.main; } }
-	[SerializeField] float defaultHoldDistance = 2.5f;
+	[SerializeField] float defaultHoldDistance = 1.5f;
 	private float currentHoldDistance;
 	private bool rotate;
+    public TextMeshProUGUI pickUpText;
+    public TextMeshProUGUI GrabControlsText;
 
-	// Start is called before the first frame update
-	void Start()
+    // Start is called before the first frame update
+    void Start()
     {
 		currentHoldDistance = defaultHoldDistance;
 	}
 
     void Update()
     {
-		if (Input.GetKeyDown(KeyCode.E))
+        Ray ray = head.ScreenPointToRay(Input.mousePosition);
+
+        pickUpText.gameObject.SetActive(false);
+        GrabControlsText.gameObject.SetActive(false);
+
+        if (grab == false)
+        {
+            if (Physics.Raycast(ray, out hit, grabDistanceLimit, (1 << 8) | (1 << 9) | (1 << 0) | (1 << 11), QueryTriggerInteraction.Ignore) && hit.collider.GetComponent<Rigidbody>() != null)
+            {
+                pickUpText.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+
+            pickUpText.gameObject.SetActive(false);
+            if (grabbedItem.gameObject.layer != 11)
+                GrabControlsText.gameObject.SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
 		{
 			if (grabbedItem == null)
 			{
-				Ray ray = head.ScreenPointToRay(Input.mousePosition);
 				if (Physics.Raycast(ray, out hit, grabDistanceLimit, (1 << 8) | (1 << 9) | (1 << 0) | (1 << 11), QueryTriggerInteraction.Ignore) && hit.collider.GetComponent<Rigidbody>() != null)
 				{
 					grab = true;

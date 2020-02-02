@@ -4,12 +4,15 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using MoreLinq;
+using TMPro;
 
 public class NailShooter : MonoBehaviour
 {
     private GameObject player;
     public GameObject nail_prefab;
     public Transform spawnPoint;
+    public TextMeshProUGUI removeNailText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +34,8 @@ public class NailShooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        removeNailText.gameObject.SetActive(false);
+
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 500, (1 << 8) | (1 << 9) | (1 << 0), QueryTriggerInteraction.Collide))
         {
@@ -38,6 +43,7 @@ public class NailShooter : MonoBehaviour
             if (hit.collider.gameObject.layer == 9)
             {
                 aimingReticle.GetComponent<Image>().color = aimingReticleNailColor;
+                removeNailText.gameObject.SetActive(true);
 
                 if (Input.GetMouseButtonDown(1))
                 {
@@ -47,7 +53,9 @@ public class NailShooter : MonoBehaviour
             else
             {
                 if (hit.collider.gameObject.layer == 8)
+                {
                     aimingReticle.GetComponent<Image>().color = aimingReticlePickupColor;
+                }
                 else
                     aimingReticle.GetComponent<Image>().color = aimingReticleBaseColor;
 
