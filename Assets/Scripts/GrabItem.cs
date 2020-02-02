@@ -89,7 +89,7 @@ public class GrabItem : MonoBehaviour
 
 		Quaternion ogRotation = grabbedItem.rotation;
 		float time = 0f;
-		foreach (Collider coll in grabbedItem.GetComponents<Collider>())
+		foreach (Collider coll in grabbedItem.GetComponentsInChildren<Collider>())
 		{
 			Physics.IgnoreCollision(transform.GetComponent<Collider>(), coll, true);
 		}
@@ -107,7 +107,7 @@ public class GrabItem : MonoBehaviour
 		grabbedrb.useGravity = true;
 		//currentHoldDistance = defaultHoldDistance;
 		//Destroy(copy);
-		foreach (Collider coll in grabbedItem.GetComponents<Collider>())
+		foreach (Collider coll in grabbedItem.GetComponentsInChildren<Collider>())
 		{
 			Physics.IgnoreCollision(transform.GetComponent<Collider>(), coll, false);
 		}
@@ -147,6 +147,10 @@ public class GrabItem : MonoBehaviour
 		}
 		while (grab)
 		{
+			if (Input.GetKeyDown(KeyCode.R))
+			{
+				grabbedrb.transform.rotation = Quaternion.identity;
+			}
 			Renderer r = grabbedItem.GetComponent<Renderer>();
 			if (r == null)
 				r = grabbedItem.GetComponentInChildren<Renderer>();

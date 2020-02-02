@@ -21,8 +21,8 @@ public class NailShooter : MonoBehaviour
 
     [Range(0.5f, 10f)]
     public float nail_distance;
-    [Range(1f, 50f)]
-    public float nail_speed;
+    [Range(1f, 75f)]
+    public float nail_speed = 75f;
 
     public Animator aimingReticle;
     private Color aimingReticleBaseColor;
@@ -53,6 +53,7 @@ public class NailShooter : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
+					GetComponent<AudioSource>().Play();
                     ShootNail();
                 }
             }
