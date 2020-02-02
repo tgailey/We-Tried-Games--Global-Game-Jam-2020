@@ -32,7 +32,7 @@ public class NailShooter : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 500, (1 << 8) | (1 << 9) | (1 << 0), QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 500, (1 << 8) | (1 << 9) | (1 << 0), QueryTriggerInteraction.Collide))
         {
             //nail
             if (hit.collider.gameObject.layer == 9)

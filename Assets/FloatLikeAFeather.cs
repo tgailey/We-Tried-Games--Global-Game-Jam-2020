@@ -8,7 +8,7 @@ public class FloatLikeAFeather : MonoBehaviour
     void Start()
     {
         GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<Rigidbody>().drag = 10;
+        GetComponent<Rigidbody>().drag = 8;
 
         ogPos = transform.position;
 

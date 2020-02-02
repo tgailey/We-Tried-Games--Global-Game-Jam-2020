@@ -8,12 +8,12 @@ public class Timer : MonoBehaviour
     public float time;
     public bool repeat = true;
     public UnityEvent OnTimer;
-    private void Start()
+    protected virtual void Start()
     {
         StartCoroutine(timer());
     }
 
-    private IEnumerator timer ()
+    protected IEnumerator timer ()
     {
         yield return new WaitForSeconds(time);
 
