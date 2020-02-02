@@ -8,10 +8,10 @@ public class GrabItem : MonoBehaviour
 	private RaycastHit hit;
 	[SerializeField] float grabDistanceLimit = 6;
 	[SerializeField] Transform grabPoint;
-	[SerializeField] Transform grabbedItem;
+	public Transform grabbedItem;
 	private Coroutine grabItemRoutine;
 	//private GameObject underWeight;
-	private bool grab = false;
+	public bool grab = false;
 	private Camera head { get { return Camera.main; } }
 	[SerializeField] float defaultHoldDistance = 2.5f;
 	private float currentHoldDistance;
@@ -35,41 +35,14 @@ public class GrabItem : MonoBehaviour
 				{
 					grab = true;
 
-                    HashSet<GameObject> lookedAtObjects = new HashSet<GameObject>();
-                    Queue<GameObject> toLookAtObjects = new Queue<GameObject>();
-
-                    toLookAtObjects.Enqueue(hit.collider.gameObject);
-                    lookedAtObjects.Add(hit.collider.gameObject);
-
-                    while (toLookAtObjects.Count > 0)
+                    List<GameObject> connectedObjects = StaticHelpers.GetAllConnectedGameObjects(hit.collider.gameObject);
+                    foreach(GameObject obj in connectedObjects)
                     {
-                        GameObject obj = toLookAtObjects.Dequeue();
-
                         if (obj.GetComponent<Rigidbody>() == null || obj.GetComponent<Rigidbody>().constraints == RigidbodyConstraints.FreezeAll)
                         {
                             grab = false;
                             Debug.Log("CANT GRAB THIS");
                             break;
-                        }
-
-                        FixedJoint[] joints = obj.GetComponents<FixedJoint>();
-                        foreach(FixedJoint joint in joints)
-                        {
-                            if (joint.connectedBody != null && lookedAtObjects.Contains(joint.connectedBody.gameObject) == false)
-                            {
-                                toLookAtObjects.Enqueue(joint.connectedBody.gameObject);
-                                lookedAtObjects.Add(joint.connectedBody.gameObject);
-                            }
-                        }
-
-                        RelationshipNoter[] relationships = obj.GetComponents<RelationshipNoter>();
-                        foreach (RelationshipNoter relationship in relationships)
-                        {
-                            if (lookedAtObjects.Contains(relationship.relationshipObject) == false)
-                            {
-                                toLookAtObjects.Enqueue(relationship.relationshipObject);
-                                lookedAtObjects.Add(relationship.relationshipObject);
-                            }
                         }
                     }
 
