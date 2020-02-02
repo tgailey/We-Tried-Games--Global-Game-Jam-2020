@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 public class StoryHandler : MonoBehaviour
@@ -29,9 +30,13 @@ public class StoryHandler : MonoBehaviour
     }
 
     private int storyPart = 0;
+    [Header("STORY PART 0 VARIABLES")]
     public GoalTracking GoalTracker0;
+    [Space]
+    [Header("STORY PART 1 VARIABLES")]
     public GoalTracking GoalTracker1;
     public GameObject meteor;
+    public fadeInText story_text;
 
     private GameObject player;
 
@@ -71,10 +76,20 @@ public class StoryHandler : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
+        meteor.SetActive(true);
+
+        //todo - this shouldn't be a time, but instead set off when the meteor triggers the destruction
+        yield return new WaitForSeconds(1.5f);
+
+        story_text.FadeInFadeOut();
+        yield return new WaitForSeconds(story_text.time);
+
+        meteor.SetActive(false);
+
         player.GetComponent<RigidbodyFirstPersonController>().enabled = true;
         player.GetComponent<RigidbodyFirstPersonController>().mouseLook.m_CharacterTargetRot = player.transform.rotation;
-
-        meteor.SetActive(true);
         GoalTracker1.startLevel = true;
+
+
     }
 }

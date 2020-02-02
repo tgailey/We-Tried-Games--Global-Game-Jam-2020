@@ -192,7 +192,8 @@ public class NailShooter : MonoBehaviour
             }
         }
         Debug.Log("count of nails: " + nails.Count);
-        GameObject.Destroy(hit.collider.gameObject);
+        if (hit.collider.gameObject != null)
+            GameObject.Destroy(hit.collider.gameObject);
 
         yield break;
     }

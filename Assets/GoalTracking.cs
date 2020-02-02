@@ -70,7 +70,7 @@ public class GoalTracking : MonoBehaviour
                 {
                     NailItText.gameObject.SetActive(true);
 
-                    if (Goals[index].GetComponent<FixedJoint>() != null)
+                    if (Goals[index].GetComponent<FixedJoint>() != null || Goals[index].GetComponent<RelationshipNoter>() != null)
                     {
                         grabItem.grab = false;
 
