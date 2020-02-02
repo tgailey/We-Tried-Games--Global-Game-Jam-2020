@@ -49,6 +49,8 @@ public class StoryHandler : MonoBehaviour
 
     public void MoveNext()
     {
+		GetComponent<AudioSource>().Play();
+		Debug.Log("play applause?");
         switch (storyPart)
         {
             case 0:
