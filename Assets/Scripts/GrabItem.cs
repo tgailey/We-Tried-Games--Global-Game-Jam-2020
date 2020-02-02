@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class GrabItem : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class GrabItem : MonoBehaviour
 	private Camera head { get { return Camera.main; } }
 	[SerializeField] float defaultHoldDistance = 2.5f;
 	private float currentHoldDistance;
+	private bool rotate;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -55,8 +58,33 @@ public class GrabItem : MonoBehaviour
 				grab = false;
 			}
 		}
+		if (Input.GetMouseButtonDown(1) && grabbedItem != null)
+		{
+			rotate = true;
+			StartCoroutine(RotateObject());
+
+		}
+		else if (Input.GetMouseButtonUp(1) && grabbedItem != null)
+		{
+			rotate = false;
+		}
 		currentHoldDistance = Mathf.Clamp(Input.mouseScrollDelta.y + currentHoldDistance, 1.5f, 8f);
 		grabPoint.localPosition = new Vector3(0, 0, currentHoldDistance);
+	}
+
+	private IEnumerator RotateObject()
+	{
+		GetComponent<RigidbodyFirstPersonController>().enabled = false;
+
+		Rigidbody grabbedrb = grabbedItem.GetComponent<Rigidbody>();
+		while (rotate)
+		{
+			Vector2 mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+			grabbedrb.angularVelocity = transform.worldToLocalMatrix * new Vector3(-mouseMovement.y, -mouseMovement.x, 0f) * 10 * mouseMovement.magnitude;
+			yield return new WaitForFixedUpdate();
+		}
+
+		GetComponent<RigidbodyFirstPersonController>().enabled = true;
 	}
 
 	private IEnumerator holditem()
