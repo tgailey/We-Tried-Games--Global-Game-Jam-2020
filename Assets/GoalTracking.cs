@@ -1,31 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GoalTracking : MonoBehaviour
 {
-    public GameObject Goal;
-    private GameObject goalIcon;
+    public List<GameObject> Goals = new List<GameObject>();
+    private List<GameObject> goalIcons;
     public Material TransparentMaterial;
+    public TextMeshProUGUI numberOfObjectsText;
+    public TextMeshProUGUI HoldItText;
+
+    private int numberInPlace;
+
     // Start is called before the first frame update
     void Start()
     {
-        goalIcon = new GameObject();
-        List<Material> materials = new List<Material>();
-        for(int i = 0; i < Goal.GetComponent<Renderer>().materials.Length; i++)
+        foreach (GameObject goal in Goals)
         {
-            Material oldMat = Goal.GetComponent<Renderer>().materials[i];
+            goalIcons = new List<GameObject>();
+            GameObject goalIcon = new GameObject();
+            List<Material> materials = new List<Material>();
+            for (int i = 0; i < goal.GetComponentInChildren<Renderer>().materials.Length; i++)
+            {
+                Material oldMat = goal.GetComponentInChildren<Renderer>().materials[i];
 
-            Material newMat = new Material(TransparentMaterial);
-            newMat.color = new Color(oldMat.color.r, oldMat.color.g, oldMat.color.b, newMat.color.a);
+                Material newMat = new Material(TransparentMaterial);
 
-            materials.Add(newMat);
+                newMat.SetColor("Color_19C6C157", new Color(oldMat.color.r, oldMat.color.g, oldMat.color.b, newMat.GetColor("Color_19C6C157").a));
+
+                materials.Add(newMat);
+            }
+
+            goalIcon.AddComponent<MeshFilter>().sharedMesh = goal.GetComponentInChildren<MeshFilter>().sharedMesh;
+            goalIcon.AddComponent<MeshRenderer>().materials = materials.ToArray();
+
+            goalIcon.transform.position = goal.transform.position;
+            goalIcon.transform.localScale = goal.transform.lossyScale;
+            goalIcon.transform.rotation = goal.transform.rotation;
+
+            goalIcons.Add(goalIcon);
         }
 
-        goalIcon.AddComponent<MeshFilter>().sharedMesh = Goal.GetComponent<MeshFilter>().sharedMesh;
-        goalIcon.AddComponent<MeshRenderer>().sharedMaterials = materials.ToArray();
-
-        goalIcon.transform.position = Goal.transform.position;
+        numberOfObjectsText.text = "0 / " + goalIcons.Count;
+        HoldItText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

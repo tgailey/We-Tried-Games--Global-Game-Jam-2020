@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using MoreLinq;
 
 public class NailShooter : MonoBehaviour
 {
     private GameObject player;
     public GameObject nail_prefab;
-
+    public Transform spawnPoint;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +32,7 @@ public class NailShooter : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 500, (1 << 8) | (1 << 9) | (1 << 0)))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 500, (1 << 8) | (1 << 9) | (1 << 0), QueryTriggerInteraction.Ignore))
         {
             //nail
             if (hit.collider.gameObject.layer == 9)
@@ -45,7 +46,10 @@ public class NailShooter : MonoBehaviour
             }
             else
             {
-                aimingReticle.GetComponent<Image>().color = aimingReticlePickupColor;
+                if (hit.collider.gameObject.layer == 8)
+                    aimingReticle.GetComponent<Image>().color = aimingReticlePickupColor;
+                else
+                    aimingReticle.GetComponent<Image>().color = aimingReticleBaseColor;
 
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -61,7 +65,7 @@ public class NailShooter : MonoBehaviour
 
     private void ShootNail()
     {
-        List<RaycastHit> results = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward, (1 << 8)).OrderBy(r => r.distance).ToList();
+        List<RaycastHit> results = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward, 500, (1 << 8) | (1 << 0), QueryTriggerInteraction.Ignore).DistinctBy(r => r.collider.gameObject).OrderBy(r => r.distance).ToList();
         Debug.Log("hit " + results.Count + " targets");
         if (results.Count > 1)
         {
@@ -82,6 +86,11 @@ public class NailShooter : MonoBehaviour
                         {
                             results[i - 1].collider.gameObject.AddComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                         }
+                        if (results[i].collider.gameObject.GetComponent<Rigidbody>() == null)
+                        {
+                            results[i].collider.gameObject.AddComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                        }
+
                         results[i - 1].collider.gameObject.AddComponent<FixedJoint>().connectedBody = results[i].collider.GetComponent<Rigidbody>();
                         results[i].collider.gameObject.AddComponent<RelationshipNoter>().relationshipObject = results[i - 1].collider.gameObject;
                     }
@@ -109,14 +118,19 @@ public class NailShooter : MonoBehaviour
     }
     private IEnumerator ShootNail(GameObject nail, RaycastHit hit)
     {
-        nail.transform.forward = -Camera.main.transform.forward;
+        //nail.transform.forward = -Camera.main.transform.forward;
         nail.transform.localScale = Vector3.one * nail_distance * 1.1f;
 
-        Vector3 startPos = Camera.main.transform.position;
-        Vector3 endPos = hit.point + Camera.main.transform.forward * nail_distance / 2.2f;
+        //Vector3 startPos = Camera.main.transform.position;
+        Vector3 newDir = (spawnPoint.position - hit.point).normalized;
+        Vector3 startPos = spawnPoint.position + newDir * nail_distance;
+        //Vector3 endPos = hit.point + Camera.main.transform.forward * nail_distance / 2.2f;
+        Vector3 endPos = hit.point - newDir * nail_distance / 2.2f;
 
         float distance_traveled = 0;
         nail.transform.position = startPos;
+        nail.transform.LookAt(hit.point);
+        nail.transform.forward = -nail.transform.forward;
         while (distance_traveled < Vector3.Distance(startPos, endPos))
         {
             nail.transform.position += (endPos - startPos).normalized * Time.deltaTime * nail_speed;

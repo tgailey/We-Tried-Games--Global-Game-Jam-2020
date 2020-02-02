@@ -12,15 +12,16 @@ public class GrabItem : MonoBehaviour
 	private Coroutine grabItemRoutine;
 	//private GameObject underWeight;
 	private bool grab = false;
-	private Camera head;
+	private Camera head { get { return Camera.main; } }
 	[SerializeField] float defaultHoldDistance = 2.5f;
 	private float currentHoldDistance;
 	// Start is called before the first frame update
 	void Start()
     {
 		currentHoldDistance = defaultHoldDistance;
-		head = GetComponentInChildren<Camera>();
 	}
+
+
 
     // Update is called once per frame
     void Update()
@@ -30,7 +31,7 @@ public class GrabItem : MonoBehaviour
 			if (grabbedItem == null)
 			{
 				Ray ray = head.ScreenPointToRay(Input.mousePosition);
-				if (Physics.Raycast(ray, out hit, grabDistanceLimit) && hit.collider.GetComponent<Rigidbody>() != null)
+				if (Physics.Raycast(ray, out hit, grabDistanceLimit, (1 << 8) | (1 << 9) | (1 << 0), QueryTriggerInteraction.Ignore) && hit.collider.GetComponent<Rigidbody>() != null)
 				{
 					grab = true;
 
@@ -47,15 +48,17 @@ public class GrabItem : MonoBehaviour
                         if (obj.GetComponent<Rigidbody>() == null || obj.GetComponent<Rigidbody>().constraints == RigidbodyConstraints.FreezeAll)
                         {
                             grab = false;
+                            Debug.Log("CANT GRAB THIS");
                             break;
                         }
 
                         FixedJoint[] joints = obj.GetComponents<FixedJoint>();
                         foreach(FixedJoint joint in joints)
                         {
-                            if (lookedAtObjects.Contains(joint.connectedBody.gameObject) == false)
+                            if (joint.connectedBody != null && lookedAtObjects.Contains(joint.connectedBody.gameObject) == false)
                             {
                                 toLookAtObjects.Enqueue(joint.connectedBody.gameObject);
+                                lookedAtObjects.Add(joint.connectedBody.gameObject);
                             }
                         }
 
@@ -65,6 +68,7 @@ public class GrabItem : MonoBehaviour
                             if (lookedAtObjects.Contains(relationship.relationshipObject) == false)
                             {
                                 toLookAtObjects.Enqueue(relationship.relationshipObject);
+                                lookedAtObjects.Add(relationship.relationshipObject);
                             }
                         }
                     }
@@ -113,12 +117,12 @@ public class GrabItem : MonoBehaviour
 			time += Time.fixedDeltaTime;
 			grabbedrb.velocity = (grabPoint.position - grabbedItem.position) * Time.deltaTime * 1000;
 			//grabbedItem.position = Vector3.MoveTowards(grabbedItem.position, grabPoint.position, Time.fixedDeltaTime * 10);
-			grabbedItem.rotation = Quaternion.Lerp(ogRotation, Quaternion.identity, time * 2);
+			//grabbedItem.rotation = Quaternion.Lerp(ogRotation, Quaternion.identity, time * 2);
 			yield return new WaitForFixedUpdate();
 		}
 		grabbedItem.transform.parent = ogParent;
 		grabbedrb.useGravity = true;
-		currentHoldDistance = defaultHoldDistance;
+		//currentHoldDistance = defaultHoldDistance;
 		//Destroy(copy);
 		Physics.IgnoreCollision(transform.GetComponent<Collider>(), grabbedItem.GetComponent<Collider>(), false);
 		grabbedItem = null;
